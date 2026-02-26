@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PANTHEON ERP DEMO – Celovit poslovni sistem | Skupina stroka.si</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Nunito+Sans:ital,opsz,wght@0,6..12,300;0,6..12,400;0,6..12,600;0,6..12,700;1,6..12,300;1,6..12,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --teal:#50afb0;
+  --teal-dark:#3d9899;
+  --teal-light:rgba(80,175,176,0.12);
+  --teal-glow:rgba(80,175,176,0.25);
+  --gold:#fbc259;
+  --salmon:#f6948c;
+  --purple:#b16299;
+  --red:#e35c4f;
+  --navy:#1a3a40;
+  --ink:#e8eaf0;
+  --gray:#9fa3b0;
+  --gray-light:#6b6f7e;
+  --border:rgba(255,255,255,0.08);
+  --border-solid:#2a2d3a;
+  --bg:#0d0f17;
+  --bg2:#13151f;
+  --bg3:#181b26;
+  --bg-card:#1a1d28;
+  --fh:'Anton',sans-serif;
+  --fb:'Nunito Sans',sans-serif;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--fb);background:var(--bg);color:var(--ink);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--bg2)}::-webkit-scrollbar-thumb{background:var(--teal);border-radius:2px}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:0 5vw;height:68px;background:rgba(13,15,23,0.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.nav-logo-img{height:32px;width:auto;display:block}
+.nav-right{display:flex;align-items:center;gap:24px}
+.nav-link{font-size:0.9rem;color:var(--gray);text-decoration:none;font-weight:600;transition:color .2s}
+.nav-link:hover{color:var(--teal)}
+.nav-cta{display:inline-flex;align-items:center;gap:8px;background:var(--teal);color:#fff;font-family:var(--fb);font-weight:700;font-size:0.9rem;padding:11px 26px;border-radius:6px;text-decoration:none;border:none;cursor:pointer;transition:all .25s}
+.nav-cta:hover{background:var(--teal-dark);transform:translateY(-1px);box-shadow:0 8px 20px var(--teal-glow)}
+
+/* HERO */
+.hero{padding:140px 5vw 100px;background:var(--bg);position:relative;overflow:hidden}
+.hero-bg-shape{position:absolute;top:0;right:0;width:46%;height:100%;background:linear-gradient(155deg,rgba(80,175,176,0.04) 0%,rgba(80,175,176,0.07) 100%);clip-path:polygon(10% 0,100% 0,100% 100%,0 100%);pointer-events:none}
+.hero-bg-glow{position:absolute;top:20%;right:15%;width:500px;height:500px;background:radial-gradient(circle,rgba(80,175,176,0.07) 0%,transparent 65%);pointer-events:none}
+.hero-accent-line{position:absolute;top:0;right:46%;width:1px;height:100%;background:linear-gradient(to bottom,transparent,rgba(80,175,176,0.2),transparent);pointer-events:none}
+.hero-content{position:relative;z-index:1;max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1.05fr 0.95fr;gap:72px;align-items:center}
+.hero-tag{display:inline-flex;align-items:center;gap:10px;background:rgba(80,175,176,0.08);border:1px solid rgba(80,175,176,0.2);color:var(--teal);font-size:0.78rem;font-weight:700;letter-spacing:0.1em;padding:7px 18px;border-radius:50px;margin-bottom:24px;text-transform:uppercase}
+.tag-dot{width:7px;height:7px;background:var(--teal);border-radius:50%;animation:pulse 2.2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.4;transform:scale(0.7)}}
+h1{font-family:var(--fh);font-size:clamp(2.8rem,5vw,4.6rem);line-height:0.97;letter-spacing:0.01em;color:#fff;margin-bottom:24px;text-transform:uppercase}
+h1 span{color:var(--teal)}
+.hero-desc{font-size:1.05rem;font-weight:400;color:var(--gray);line-height:1.75;max-width:500px;margin-bottom:40px}
+.hero-actions{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+.btn-primary{display:inline-flex;align-items:center;gap:8px;background:var(--teal);color:#fff;font-family:var(--fb);font-weight:700;font-size:1rem;padding:15px 32px;border-radius:6px;text-decoration:none;border:none;cursor:pointer;transition:all .3s}
+.btn-primary:hover{background:var(--teal-dark);transform:translateY(-2px);box-shadow:0 14px 32px var(--teal-glow)}
+.btn-ghost{display:inline-flex;align-items:center;gap:8px;background:transparent;color:var(--ink);font-family:var(--fb);font-weight:600;font-size:1rem;padding:14px 28px;border-radius:6px;text-decoration:none;border:2px solid var(--border-solid);cursor:pointer;transition:all .3s}
+.btn-ghost:hover{border-color:var(--teal);color:var(--teal)}
+.hero-stats{display:flex;gap:44px;margin-top:48px;padding-top:40px;border-top:1px solid var(--border);flex-wrap:wrap}
+.stat-n{font-family:var(--fh);font-size:2.6rem;color:var(--teal);line-height:1}
+.stat-l{font-size:0.82rem;color:var(--gray-light);margin-top:4px;font-weight:600}
+
+/* ERP Mock */
+.erp-wrap{position:relative;animation:floatUp 5.5s ease-in-out infinite}
+@keyframes floatUp{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.erp-mock{background:var(--bg-card);border-radius:14px;border:1px solid var(--border-solid);overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,0.5),0 2px 8px rgba(0,0,0,0.3)}
+.em-header{background:#080a12;padding:13px 18px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
+.em-logo{font-family:var(--fh);font-size:0.88rem;color:#fff;letter-spacing:0.03em}
+.em-logo span{color:var(--teal)}
+.em-dots{display:flex;gap:6px}
+.em-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.15)}
+.em-nav{display:flex;border-bottom:1px solid var(--border-solid);padding:0 18px;overflow-x:auto;background:var(--bg3)}
+.em-tab{padding:9px 14px;font-size:0.7rem;font-weight:700;color:var(--gray-light);white-space:nowrap;cursor:pointer;border-bottom:2px solid transparent;transition:all .2s}
+.em-tab.active{color:var(--teal);border-bottom-color:var(--teal)}
+.em-body{padding:18px}
+.em-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:14px}
+.ek{background:var(--bg3);border-radius:7px;padding:11px;border:1px solid var(--border-solid)}
+.ek-v{font-family:var(--fh);font-size:1rem;margin-bottom:2px}
+.ek-v.t{color:var(--teal)}.ek-v.g{color:var(--gold)}.ek-v.r{color:var(--red)}
+.ek-l{font-size:0.6rem;color:var(--gray-light);letter-spacing:0.05em;text-transform:uppercase}
+.em-table{width:100%;border-collapse:collapse;font-size:0.7rem}
+.em-table th{padding:7px 10px;background:var(--bg3);color:var(--gray-light);text-align:left;letter-spacing:0.04em;font-weight:700;text-transform:uppercase;border-bottom:1px solid var(--border-solid)}
+.em-table td{padding:7px 10px;border-bottom:1px solid var(--border-solid);color:var(--ink)}
+.em-table tr:last-child td{border-bottom:none}
+.st{display:inline-block;padding:2px 7px;border-radius:4px;font-size:0.62rem;font-weight:700}
+.st.ok{background:rgba(74,222,128,0.12);color:#4ade80}
+.st.pend{background:rgba(251,194,89,0.12);color:var(--gold)}
+.st.warn{background:rgba(227,92,79,0.12);color:var(--red)}
+.erp-badge{position:absolute;bottom:-16px;left:-24px;background:var(--bg-card);border:1px solid var(--border-solid);border-radius:10px;padding:10px 14px;display:flex;align-items:center;gap:10px;box-shadow:0 12px 32px rgba(0,0,0,0.5);animation:floatBadge 4s ease-in-out infinite;z-index:2}
+@keyframes floatBadge{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.eb-icon{width:32px;height:32px;border-radius:7px;background:var(--teal-light);display:flex;align-items:center;justify-content:center;font-size:0.9rem}
+.eb-val{font-family:var(--fh);font-size:0.95rem;color:var(--ink)}.eb-sub{font-size:0.64rem;color:var(--gray-light)}
+
+/* TRUST */
+.trust{background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:30px 5vw}
+.trust-inner{max-width:1280px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:18px}
+.trust-label{font-size:0.74rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--gray-light)}
+.trust-logos{display:flex;gap:36px;flex-wrap:wrap;align-items:center}
+.tl{font-family:var(--fb);font-weight:700;font-size:0.88rem;color:rgba(255,255,255,0.18);transition:color .3s;cursor:default}
+.tl:hover{color:rgba(255,255,255,0.5)}
+
+/* SHARED */
+section{padding:96px 5vw}
+.s-inner{max-width:1280px;margin:0 auto}
+.s-eyebrow{font-size:0.74rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--teal);margin-bottom:12px}
+.s-title{font-family:var(--fh);font-size:clamp(2rem,3.8vw,3.2rem);line-height:1.0;letter-spacing:0.01em;color:#fff;text-transform:uppercase;margin-bottom:16px}
+.s-desc{font-size:1rem;color:var(--gray);line-height:1.72}
+
+/* MODULES */
+.modules-section{background:var(--bg)}
+.modules-header{max-width:680px;margin-bottom:64px}
+.mod-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.mod-card{padding:32px 28px;border-radius:12px;border:1px solid var(--border-solid);transition:all .32s;cursor:pointer;background:var(--bg-card);position:relative;overflow:hidden}
+.mod-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--teal);transform:scaleX(0);transform-origin:left;transition:transform .35s;opacity:0.6}
+.mod-card:hover::before{transform:scaleX(1)}
+.mod-card:hover{border-color:rgba(80,175,176,0.25);box-shadow:0 16px 40px rgba(0,0,0,0.3);transform:translateY(-3px)}
+.mod-icon{width:48px;height:48px;border-radius:10px;background:var(--teal-light);border:1px solid rgba(80,175,176,0.15);display:flex;align-items:center;justify-content:center;font-size:1.3rem;margin-bottom:20px;transition:all .3s}
+.mod-card:hover .mod-icon{background:rgba(80,175,176,0.18);border-color:rgba(80,175,176,0.3)}
+.mod-title{font-family:var(--fh);font-size:1rem;color:#fff;margin-bottom:10px}
+.mod-desc{font-size:0.875rem;color:var(--gray);line-height:1.62}
+.mod-link{display:inline-flex;align-items:center;gap:5px;margin-top:14px;font-size:0.78rem;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:0.06em}
+
+/* WHY SECTION */
+.why-section{background:var(--bg2)}
+.why-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.why-list{display:flex;flex-direction:column;gap:22px;margin-top:36px}
+.why-item{display:flex;gap:18px;align-items:flex-start}
+.why-num{flex-shrink:0;width:36px;height:36px;border-radius:8px;background:var(--teal);color:#fff;font-family:var(--fh);font-size:0.9rem;display:flex;align-items:center;justify-content:center}
+.why-title{font-family:var(--fh);font-size:0.95rem;color:#fff;margin-bottom:5px}
+.why-desc{font-size:0.875rem;color:var(--gray);line-height:1.62}
+.process-card{background:var(--bg-card);border-radius:16px;padding:36px 32px;border:1px solid var(--border-solid);box-shadow:0 16px 40px rgba(0,0,0,0.3)}
+.process-card-title{font-family:var(--fh);font-size:1rem;color:#fff;margin-bottom:24px}
+.p-steps{display:flex;flex-direction:column;gap:0}
+.p-step{display:flex;gap:16px;align-items:flex-start;padding-bottom:22px;position:relative}
+.p-step:last-child{padding-bottom:0}
+.p-step::before{content:'';position:absolute;left:15px;top:32px;width:1px;height:calc(100% - 8px);background:var(--border-solid)}
+.p-step:last-child::before{display:none}
+.p-dot{flex-shrink:0;width:32px;height:32px;border-radius:50%;background:rgba(80,175,176,0.08);border:2px solid rgba(80,175,176,0.2);display:flex;align-items:center;justify-content:center;font-size:0.8rem;position:relative;z-index:1;transition:all .3s;color:var(--gray-light)}
+.p-dot.done{background:var(--teal);border-color:var(--teal);color:#fff}
+.p-dot.active{background:rgba(80,175,176,0.12);border-color:var(--teal);color:var(--teal)}
+.p-step-title{font-weight:700;font-size:0.9rem;color:var(--ink);margin-bottom:3px}
+.p-step-sub{font-size:0.78rem;color:var(--gray-light)}
+.p-badge{display:inline-block;margin-top:5px;padding:3px 9px;border-radius:4px;font-size:0.66rem;font-weight:700}
+.pb-done{background:rgba(74,222,128,0.12);color:#4ade80}
+.pb-active{background:rgba(80,175,176,0.12);color:var(--teal)}
+.pb-wait{background:rgba(255,255,255,0.05);color:var(--gray-light)}
+
+/* CASE STUDIES */
+.cases-section{background:var(--bg)}
+.cases-header{max-width:680px;margin-bottom:52px}
+.cases-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.case-card{background:var(--bg-card);border:1px solid var(--border-solid);border-radius:12px;padding:30px 28px;transition:all .3s}
+.case-card:hover{border-color:rgba(80,175,176,0.25);transform:translateY(-2px);box-shadow:0 12px 32px rgba(0,0,0,0.3)}
+.case-icon{font-size:1.5rem;margin-bottom:14px}
+.case-title{font-family:var(--fh);font-size:0.95rem;color:#fff;margin-bottom:8px}
+.case-desc{font-size:0.84rem;color:var(--gray);line-height:1.62;margin-bottom:16px}
+.case-link{display:inline-flex;align-items:center;gap:5px;font-size:0.78rem;font-weight:700;color:var(--teal);text-decoration:none;letter-spacing:0.04em}
+.case-link:hover{color:#fff}
+
+/* FORM */
+.form-section{background:var(--bg2);border-top:1px solid var(--border);position:relative;overflow:hidden}
+.form-section::before{content:'';position:absolute;top:-150px;right:-80px;width:450px;height:450px;border-radius:50%;background:radial-gradient(circle,rgba(80,175,176,0.07) 0%,transparent 65%);pointer-events:none}
+.form-section::after{content:'';position:absolute;bottom:-80px;left:-60px;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(251,194,89,0.04) 0%,transparent 65%);pointer-events:none}
+.form-inner{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;position:relative;z-index:1}
+.check-list{display:flex;flex-direction:column;gap:14px;margin-top:32px}
+.cl-item{display:flex;align-items:center;gap:14px}
+.cl-dot{flex-shrink:0;width:26px;height:26px;border-radius:6px;background:rgba(80,175,176,0.1);border:1.5px solid rgba(80,175,176,0.25);display:flex;align-items:center;justify-content:center;font-size:0.8rem;color:var(--teal);font-weight:700}
+.cl-text{font-size:0.9rem;color:var(--gray)}
+.form-box{background:var(--bg-card);border:1px solid var(--border-solid);border-radius:18px;padding:48px 40px;position:relative;overflow:hidden}
+.form-box::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--teal),rgba(80,175,176,0.3))}
+.form-inner-title{font-family:var(--fh);font-size:1.5rem;color:#fff;margin-bottom:6px}
+.form-inner-sub{font-size:0.88rem;color:var(--gray-light);margin-bottom:30px;line-height:1.6}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.field{display:flex;flex-direction:column;gap:7px;margin-bottom:14px}
+.field label{font-size:0.74rem;font-weight:700;color:var(--gray-light);letter-spacing:0.07em;text-transform:uppercase}
+.field input{background:rgba(255,255,255,0.05);border:1px solid var(--border-solid);color:#fff;font-family:var(--fb);font-size:0.95rem;padding:13px 16px;border-radius:8px;outline:none;transition:all .25s}
+.field input:focus{border-color:var(--teal);background:rgba(80,175,176,0.07);box-shadow:0 0 0 3px rgba(80,175,176,0.1)}
+.field input::placeholder{color:rgba(255,255,255,0.18)}
+.submit-btn{width:100%;padding:17px;background:var(--teal);color:#fff;font-family:var(--fb);font-weight:700;font-size:1rem;border:none;border-radius:8px;cursor:pointer;transition:all .3s;letter-spacing:0.02em;margin-top:4px}
+.submit-btn:hover{background:var(--teal-dark);transform:translateY(-2px);box-shadow:0 14px 36px var(--teal-glow)}
+.form-privacy{font-size:0.74rem;color:var(--gray-light);margin-top:18px;line-height:1.6;text-align:center}
+.form-privacy a{color:rgba(80,175,176,0.8);text-decoration:none}
+.success-msg{display:none;text-align:center;padding:24px 0}
+.success-icon{font-size:3.2rem;margin-bottom:14px}
+.success-title{font-family:var(--fh);font-size:1.6rem;color:#fff;margin-bottom:8px}
+.success-sub{color:var(--gray);font-size:0.9rem;line-height:1.6}
+
+/* FOOTER */
+footer{background:#080a12;border-top:1px solid var(--border);padding:56px 5vw 36px}
+.footer-inner{max-width:1280px;margin:0 auto;display:flex;justify-content:space-between;flex-wrap:wrap;gap:40px}
+.footer-logo-img img{filter:brightness(0) invert(1);opacity:0.7}
+.footer-tagline{font-size:0.84rem;color:rgba(255,255,255,0.28);margin-top:8px;max-width:240px;line-height:1.6}
+.footer-links h4{font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.25);margin-bottom:14px}
+.footer-links a{display:block;font-size:0.88rem;color:rgba(255,255,255,0.38);text-decoration:none;margin-bottom:9px;transition:color .2s}
+.footer-links a:hover{color:var(--teal)}
+.footer-bottom{max-width:1280px;margin:36px auto 0;padding-top:22px;border-top:1px solid var(--border);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:0.78rem;color:rgba(255,255,255,0.18)}
+
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:translateY(0)}}
+.fu{opacity:0;animation:fadeUp .7s ease forwards}
+.d1{animation-delay:.1s}.d2{animation-delay:.2s}.d3{animation-delay:.3s}.d4{animation-delay:.4s}
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .65s ease,transform .65s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* RESPONSIVE */
+@media(max-width:1060px){
+  .hero-content{grid-template-columns:1fr}
+  .hero-bg-shape,.hero-accent-line,.erp-wrap{display:none}
+  .mod-grid{grid-template-columns:repeat(2,1fr)}
+  .why-grid{grid-template-columns:1fr}
+  .form-inner{grid-template-columns:1fr}
+  .cases-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:640px){
+  nav{padding:0 20px}
+  .hero{padding:108px 20px 60px}
+  h1{font-size:2.4rem}
+  section{padding:64px 20px}
+  .mod-grid{grid-template-columns:1fr}
+  .field-row{grid-template-columns:1fr}
+  .form-box{padding:28px 20px}
+  .footer-inner{flex-direction:column}
+  .cases-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="https://www.stroka.si"><img src="https://www.stroka.si/Portals/_default/logo_stroka_si_white.png?ver=2025-06-04-113611-483&timestamp=1749029751774" alt="Skupina stroka.si" class="nav-logo-img"></a>
+  <div class="nav-right">
+    <a href="#moduli" class="nav-link">Moduli</a>
+    <a href="#implementacija" class="nav-link">Implementacija</a>
+    <a href="#demo-form" class="nav-cta">Zahtevajte DEMO →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg-shape"></div>
+  <div class="hero-bg-glow" style="position:absolute;top:20%;right:15%;width:500px;height:500px;background:radial-gradient(circle,rgba(80,175,176,0.07) 0%,transparent 65%);pointer-events:none"></div>
+  <div class="hero-accent-line"></div>
+  <div class="hero-content">
+    <div>
+      <div class="hero-tag fu"><div class="tag-dot"></div>ERP rešitev za slovenska podjetja</div>
+      <h1 class="fu d1">Celovit poslovni<br>sistem <span>PANTHEON</span><br>za vaše podjetje</h1>
+      <p class="hero-desc fu d2">Od prodaje in nabave do financ in zalog — PANTHEON ERP poveže vse poslovne procese v eno pregledno okolje. Preizkusite v brezplačnem demu.</p>
+      <div class="hero-actions fu d3">
+        <a href="#demo-form" class="btn-primary">Zahtevajte DEMO →</a>
+        <a href="#moduli" class="btn-ghost">Ogled modulov</a>
+      </div>
+      <div class="hero-stats fu d4">
+        <div><div class="stat-n">470+</div><div class="stat-l">zadovoljnih PANTHEON strank</div></div>
+        <div><div class="stat-n">20+</div><div class="stat-l">let izkušenj</div></div>
+        <div><div class="stat-n">15</div><div class="stat-l">strokovnjakov</div></div>
+      </div>
+    </div>
+    <div class="erp-wrap fu d2">
+      <div class="erp-mock">
+        <div class="em-header">
+          <div class="em-logo">stroka<span>.si</span> · PANTHEON ERP</div>
+          <div class="em-dots"><div class="em-dot" style="background:#ff5f57"></div><div class="em-dot" style="background:#febc2e"></div><div class="em-dot" style="background:#28c840"></div></div>
+        </div>
+        <div class="em-nav">
+          <div class="em-tab active">Pregled</div>
+          <div class="em-tab">Prodaja</div>
+          <div class="em-tab">Nabava</div>
+          <div class="em-tab">Finance</div>
+          <div class="em-tab">Zaloge</div>
+        </div>
+        <div class="em-body">
+          <div class="em-kpis">
+            <div class="ek"><div class="ek-v t">€284K</div><div class="ek-l">Mesečna prodaja</div></div>
+            <div class="ek"><div class="ek-v g">42</div><div class="ek-l">Odprti nalogi</div></div>
+            <div class="ek"><div class="ek-v r">€18K</div><div class="ek-l">Zapadle terjatve</div></div>
+          </div>
+          <table class="em-table">
+            <thead><tr><th>Dokument</th><th>Stranka</th><th>Znesek</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td>PR-2025-0421</td><td>Podjetje A d.o.o.</td><td>€12,480</td><td><span class="st ok">Potrjeno</span></td></tr>
+              <tr><td>PR-2025-0422</td><td>B Corp. d.d.</td><td>€8,200</td><td><span class="st pend">V obdelavi</span></td></tr>
+              <tr><td>PR-2025-0423</td><td>C Storitve s.p.</td><td>€3,650</td><td><span class="st warn">Čaka</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="erp-badge">
+        <div class="eb-icon">✓</div>
+        <div><div class="eb-val">470+ implementacij</div><div class="eb-sub">v slovenskem gospodarstvu</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TRUST -->
+<div class="trust">
+  <div class="trust-inner">
+    <div class="trust-label">Zaupajo nam</div>
+    <div class="trust-logos">
+      <div class="tl">DPD</div>
+      <div class="tl">Zarja elektronika</div>
+      <div class="tl">KEFO</div>
+      <div class="tl">AND by Andraž</div>
+      <div class="tl">SPS</div>
+      <div class="tl">Eventim</div>
+    </div>
+  </div>
+</div>
+
+<!-- MODULES -->
+<section class="modules-section" id="moduli">
+  <div class="s-inner">
+    <div class="modules-header">
+      <div class="s-eyebrow reveal">Poslovni moduli</div>
+      <div class="s-title reveal">En sistem za vse<br>poslovne procese</div>
+      <p class="s-desc reveal" style="margin-top:14px">PANTHEON ERP pokrije celoten poslovni cikel — od prvega stika s stranko do izterjave in finančnih poročil. Sistem je modularen, zato začnete z osnovnimi moduli in postopno dodajate funkcionalnosti.</p>
+    </div>
+    <div class="mod-grid">
+
+      <div class="mod-card reveal">
+        <div class="mod-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/>
+          </svg>
+        </div>
+        <div class="mod-title">Prodaja</div>
+        <div class="mod-desc">Ponudbe, naročila kupcev, dobavnice, računi. Celoten prodajni tok z analizo uspešnosti. Samodejno pretvarjanje naročil v izdane dokumente, avansni računi in napovedovanje prihodkov.</div>
+      </div>
+
+      <div class="mod-card reveal">
+        <div class="mod-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4a2 2 0 012 2v6a2 2 0 01-2 2h-1"/><circle cx="6" cy="20" r="2"/><circle cx="18" cy="20" r="2"/><path d="M14 16H9"/>
+          </svg>
+        </div>
+        <div class="mod-title">Nabava</div>
+        <div class="mod-desc">Upravljanje dobaviteljev, naročila dobaviteljem, prevzemi in kontrola računov. Načrtovanje naročil, pregled potreb in optimizacija nabavnih stroškov ter zalog.</div>
+      </div>
+
+      <div class="mod-card reveal">
+        <div class="mod-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/>
+          </svg>
+        </div>
+        <div class="mod-title">Finance & Denar</div>
+        <div class="mod-desc">Glavni dnevnik, terjatve, obveznosti, zakonska poročila, DDV, bilanca stanja. Plačilni promet, blagajna, avtomatsko knjiženje faktur v glavno knjigo z enim klikom.</div>
+      </div>
+
+      <div class="mod-card reveal">
+        <div class="mod-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 002 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/>
+          </svg>
+        </div>
+        <div class="mod-title">Zaloge & Blago</div>
+        <div class="mod-desc">Prevzem in izdaja blaga, upravljanje zalog po skladiščih, lokacijah ali serijah, inventura, vrednotenje zalog, sledenje serijskim številkam in prenosi med skladišči.</div>
+      </div>
+
+      <div class="mod-card reveal">
+        <div class="mod-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/><polyline points="7 8 10 11 14 6 17 9"/>
+          </svg>
+        </div>
+        <div class="mod-title">Proizvodnja</div>
+        <div class="mod-desc">Delovni nalogi, poročanje o opravljenem delu in porabi materiala, prevzem končnih izdelkov. Sledenje materialnim tokom, pokalkulacija, analiza in planiranje proizvodnje.</div>
+      </div>
+
+      <div class="mod-card reveal">
+        <div class="mod-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/>
+          </svg>
+        </div>
+        <div class="mod-title">Kadri</div>
+        <div class="mod-desc">Evidenca zaposlenih, potni nalogi, delovni čas in odsotnosti, obračun vseh vrst zaslužkov, izračun letnih dopustov in zakonsko potrebni obrazci.</div>
+      </div>
+
+      <div class="mod-card reveal">
+        <div class="mod-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+          </svg>
+        </div>
+        <div class="mod-title">Servis</div>
+        <div class="mod-desc">Vodenje servisnih nalogov, upravljanje garancij, sledenje popravilom in zaključkom nalogov. Povezava z zalogami rezervnih delov in financami za obračun storitev.</div>
+      </div>
+
+      <div class="mod-card reveal">
+        <div class="mod-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+          </svg>
+        </div>
+        <div class="mod-title">Analitika & Šifranti</div>
+        <div class="mod-desc">Priprava analiz in KPI poročil, enoten šifrant subjektov in artiklov, pogodbeni ceniki. Temelj za konsistentne podatke v celotnem sistemu.</div>
+      </div>
+
+      <div class="mod-card reveal" style="border-color:rgba(80,175,176,0.25);background:rgba(80,175,176,0.05)">
+        <div class="mod-icon" style="background:rgba(80,175,176,0.15);border-color:rgba(80,175,176,0.3)">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/><path d="M14 13l2 2 4-4"/>
+          </svg>
+        </div>
+        <div class="mod-title" style="color:var(--teal)">Power BI analitika</div>
+        <div class="mod-desc">Dopolnite PANTHEON z napredno Power BI analitiko — FinCheck, CashFlow Planner, OEE in projektni dashboard. Idealna kombinacija: PANTHEON kot vir podatkov + Power BI za odločanje.</div>
+        <a href="https://www.stroka.si/Kaj-delamo/Poslovna-analitika" target="_blank" rel="noopener" class="mod-link">Power BI DEMO →</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- WHY / IMPLEMENTATION -->
+<section class="why-section" id="implementacija">
+  <div class="s-inner">
+    <div class="why-grid">
+      <div>
+        <div class="s-eyebrow reveal">Zakaj PANTHEON s Skupino stroka.si</div>
+        <div class="s-title reveal">Implementacija,<br>ki resnično deluje</div>
+        <div class="why-list">
+          <div class="why-item reveal">
+            <div class="why-num">1</div>
+            <div><div class="why-title">Posnetek stanja in analiza procesov</div><div class="why-desc">Začnemo z delavnico. Najprej razumemo vašo organizacijo, poslovne procese in specifike. Posnetek stanja je temelj za dobro implementacijo.</div></div>
+          </div>
+          <div class="why-item reveal">
+            <div class="why-num">2</div>
+            <div><div class="why-title">Konfiguracija po vaših procesih</div><div class="why-desc">Ne prilagajate sistema, sistem se prilagodi vam. Namestitev, konfiguracija, programske dodelave in oblikovanje izpisov po vaših potrebah.</div></div>
+          </div>
+          <div class="why-item reveal">
+            <div class="why-num">3</div>
+            <div><div class="why-title">Prenos podatkov in izobraževanje</div><div class="why-desc">Prenesemo šifrante, stranke, dobavitelje in zaloge. Usposobimo vašo ekipo po fazah — od osnov sistema do delovnih procesov.</div></div>
+          </div>
+          <div class="why-item reveal">
+            <div class="why-num">4</div>
+            <div><div class="why-title">Podpora po zagonu</div><div class="why-desc">Z nami niste sami niti po implementaciji. Vzdrževalna pogodba, skrbnik in helpdesk — hitri dostop do strokovnjakov z dodeljenim skrbnikom.</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="reveal">
+        <div class="process-card">
+          <div class="process-card-title">Tipični potek implementacije</div>
+          <div class="p-steps">
+            <div class="p-step">
+              <div class="p-dot done">✓</div>
+              <div><div class="p-step-title">Posnetek stanja & DEMO</div><div class="p-step-sub">Delavnica — razumevanje procesov, potrditev zahtev</div><span class="p-badge pb-done">Teden 1–2</span></div>
+            </div>
+            <div class="p-step">
+              <div class="p-dot done">✓</div>
+              <div><div class="p-step-title">Namestitev in konfiguracija</div><div class="p-step-sub">Nastavitev modulov, šifranti, avtorizacije</div><span class="p-badge pb-done">Teden 3–4</span></div>
+            </div>
+            <div class="p-step">
+              <div class="p-dot active">◉</div>
+              <div><div class="p-step-title">Prenos podatkov</div><div class="p-step-sub">Šifranti strank, artiklov, otv. stanje zalog</div><span class="p-badge pb-active">V teku</span></div>
+            </div>
+            <div class="p-step">
+              <div class="p-dot">4</div>
+              <div><div class="p-step-title">Izobraževanje in testiranje</div><div class="p-step-sub">Usposabljanje ekipe, potrjevanje funkcionalnosti</div><span class="p-badge pb-wait">Teden 7–8</span></div>
+            </div>
+            <div class="p-step">
+              <div class="p-dot">🚀</div>
+              <div><div class="p-step-title">Go-Live & podpora</div><div class="p-step-sub">Zagon sistema, vzdrževalna pogodba</div><span class="p-badge pb-wait">Teden 9+</span></div>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:16px;background:var(--bg-card);border:1px solid var(--border-solid);border-radius:10px;padding:16px 18px;display:flex;gap:14px;align-items:flex-start">
+          <div style="font-size:1.2rem">⚠️</div>
+          <div style="font-size:0.82rem;color:var(--gray);line-height:1.6"><strong style="color:var(--ink)">Ključni dejavnik uspeha:</strong> Skoraj 26 % implementacij ERP je neuspešnih zaradi pomanjkanja projektnega načrta. Pravilna implementacija začne z dobrim posnetkom stanja.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CASE STUDIES / DOBRE PRAKSE -->
+<section class="cases-section">
+  <div class="s-inner">
+    <div class="cases-header">
+      <div class="s-eyebrow reveal">Primeri dobre prakse</div>
+      <div class="s-title reveal">Kako PANTHEON deluje<br>v resničnih podjetjih</div>
+      <p class="s-desc reveal" style="margin-top:14px">Preverite, kako smo pri strankah uspešno implementirali PANTHEON in kakšne rezultate so dosegli.</p>
+    </div>
+    <div class="cases-grid">
+      <div class="case-card reveal">
+        <div class="case-icon">🏭</div>
+        <div class="case-title">Proizvodna podjetja</div>
+        <div class="case-desc">Integracija modula Proizvodnja z zalogami in financami — pregled nad delovnimi nalogi, porabo materiala in stroški v realnem času.</div>
+        <a href="https://www.stroka.si/Vsebine/Studije-primerov/tkanje-prihodnosti-kako-je-slovensko-tekstilno-podjetje-s-pantheon-erp-premagalo-digitalni-izziv" target="_blank" rel="noopener" class="case-link">Preberi primer →</a>
+      </div>
+      <div class="case-card reveal">
+        <div class="case-icon">🛒</div>
+        <div class="case-title">Trgovska podjetja</div>
+        <div class="case-desc">Optimizacija nabave in zalog, upravljanje dobaviteljev in strank v enotnem sistemu. Manj ročnega dela, manj napak.</div>
+        <a href="https://www.stroka.si/Reference/Izjave-strank/uspesna-integracija-platforme-nopcommerce-in-programa-pantheon-erp" target="_blank" rel="noopener" class="case-link">Preberi primer →</a>
+      </div>
+      <div class="case-card reveal">
+        <div class="case-icon">💼</div>
+        <div class="case-title">Storitvena podjetja</div>
+        <div class="case-desc">Finance, kadri in projektno sledenje v enem sistemu. Zakonska poročila, DDV in izterjava brez večurnega ročnega dela.</div>
+        <a href="https://www.stroka.si/Reference/Izjave-strank/program-pantheon-informacijski-de%c5%benik-za-vse-poslovne-procese" target="_blank" rel="noopener" class="case-link">Preberi primer →</a>
+      </div>
+    </div>
+    <div style="margin-top:36px;text-align:center">
+      <a href="https://www.stroka.si/Vsebine/Studije-primerov" target="_blank" rel="noopener" class="btn-ghost reveal">Več primerov dobrih praks →</a>
+    </div>
+  </div>
+</section>
+
+<!-- LEAD FORM -->
+<section class="form-section" id="demo-form">
+  <div class="form-inner s-inner">
+    <div class="form-left">
+      <div class="s-eyebrow reveal">Brezplačen DEMO</div>
+      <div class="s-title reveal">Oglejte si PANTHEON</div>
+      <p class="s-desc reveal" style="margin-top:14px">Pošljemo vam demo, s katerim lahko raziščete program. Brez obveznosti.</p>
+      <div class="check-list reveal">
+        <div class="cl-item"><div class="cl-dot">✓</div><span class="cl-text">Brezplačen demo na daljavo</span></div>
+        <div class="cl-item"><div class="cl-dot">✓</div><span class="cl-text">Pregled modulov, relevantnih za vaše procese</span></div>
+        <div class="cl-item"><div class="cl-dot">✓</div><span class="cl-text">Okvirna ocena stroškov implementacije</span></div>
+        <div class="cl-item"><div class="cl-dot">✓</div><span class="cl-text">Brez prodajnega pritiska</span></div>
+      </div>
+      <div style="margin-top:36px;padding:20px 22px;background:var(--bg-card);border:1px solid var(--border-solid);border-radius:10px">
+        <div style="font-size:0.7rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--gray-light);margin-bottom:14px">Zakaj nam zaupati</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+          <div><div style="font-family:var(--fh);font-size:1.8rem;color:var(--teal)">20+</div><div style="font-size:0.74rem;color:var(--gray-light)">let izkušenj</div></div>
+          <div><div style="font-family:var(--fh);font-size:1.8rem;color:var(--teal)">15</div><div style="font-size:0.74rem;color:var(--gray-light)">strokovnjakov</div></div>
+          <div><div style="font-family:var(--fh);font-size:1.8rem;color:var(--teal)">6</div><div style="font-size:0.74rem;color:var(--gray-light)">razvijalcev</div></div>
+          <div><div style="font-family:var(--fh);font-size:1.8rem;color:var(--teal)">470</div><div style="font-size:0.74rem;color:var(--gray-light)">zadovoljnih PANTHEON strank</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="reveal">
+      <div class="form-box">
+        <div class="form-inner-title">Zahtevajte PANTHEON DEMO</div>
+        <div class="form-inner-sub">DEMO vam bo po izpolnitvi obrazca poslan v najkrajšem možnem času</div>
+        <form id="pantheon-form">
+          <div class="field-row">
+            <div class="field"><label>Ime in priimek *</label><input type="text" name="ime" placeholder="Jana Novak" required></div>
+            <div class="field"><label>Podjetje *</label><input type="text" name="podjetje" placeholder="Vaše podjetje d.o.o." required></div>
+          </div>
+          <div class="field-row">
+            <div class="field"><label>E-mail *</label><input type="email" name="email" placeholder="jana@podjetje.si" required></div>
+            <div class="field"><label>Telefonska številka</label><input type="tel" name="telefon" placeholder="+386 ..."></div>
+          </div>
+          <button type="submit" class="submit-btn">Pošlji zahtevek za DEMO →</button>
+        </form>
+        <div class="success-msg" id="pantheon-success">
+          <div class="success-icon">🎉</div>
+          <div class="success-title">Zahtevek prejet!</div>
+          <div class="success-sub">DEMO vam bo posredovan na vaš e-mail naslov v najkrajšem možnem času.</div>
+        </div>
+        <p class="form-privacy">Z izpolnitvijo soglašate z <a href="#">politiko zasebnosti</a>. Podatkov ne delimo s tretjimi osebami.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-logo-img"><img src="https://www.stroka.si/Portals/_default/logo_stroka_si_white.png?ver=2025-06-04-113611-483&timestamp=1749029751774" alt="Skupina stroka.si" style="max-width:180px;height:auto"></div>
+      <div class="footer-tagline">Z več kot 20-letnimi izkušnjami na področju ERP rešitev vam pomagamo izbrati in implementirati pravo rešitev za vaše podjetje.</div>
+    </div>
+    <div class="footer-links">
+      <h4>PANTHEON ERP</h4>
+      <a href="#moduli">Moduli</a>
+      <a href="#implementacija">Implementacija</a>
+      <a href="https://www.stroka.si/Vsebine/Studije-primerov" target="_blank" rel="noopener">Primeri dobre prakse</a>
+    </div>
+    <div class="footer-links">
+      <h4>Rešitve</h4>
+      <a href="https://www.stroka.si/Kaj-delamo/Poslovna-analitika/Gradivo/fincheck-power-bi-nadzorna-plo%c5%a1%c4%8da-analiti%c4%8dni-temelj-pravih-odlo%c4%8ditev" target="_blank" rel="noopener">FinCheck Power BI</a>
+      <a href="https://www.stroka.si/Vsebine/Novice-in-obvestila/powerbi-cashflow-planner-naj-podatki-delajo-v-vaso-korist" target="_blank" rel="noopener">CashFlow Planner</a>
+      <a href="https://www.stroka.si/Kaj-delamo/Poslovna-analitika" target="_blank" rel="noopener">Power BI analitika</a>
+    </div>
+    <div class="footer-links">
+      <h4>Kontakt</h4>
+      <a href="mailto:ccc@stroka.si">ccc@stroka.si</a>
+      <a href="https://www.stroka.si" target="_blank" rel="noopener">www.stroka.si</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Stroka produkt d.o.o. Vse pravice pridržane.</span>
+    <span>Skupina stroka.si · ccc@stroka.si · www.stroka.si</span>
+  </div>
+</footer>
+
+<script>
+const obs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}
+  });
+},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+// Google Sheets URL — vaš sheet: https://docs.google.com/spreadsheets/d/1ac5VRB7G15y97DLHEAd0h0YdTvPw6cGP5gmukWSBRqw/
+const PANTHEON_URL = 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec';
+
+document.getElementById('pantheon-form').addEventListener('submit', async function(e){
+  e.preventDefault();
+  const btn = this.querySelector('.submit-btn');
+  btn.textContent = 'Pošiljam...';
+  btn.disabled = true;
+  const fd = new FormData(this);
+  const data = {
+    ime: fd.get('ime'),
+    podjetje: fd.get('podjetje'),
+    email: fd.get('email'),
+    telefon: fd.get('telefon') || '-',
+    vir: 'PANTHEON ERP DEMO Landing Page',
+    datum: new Date().toLocaleString('sl-SI')
+  };
+  try {
+    await fetch(PANTHEON_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(data)
+    });
+  } catch(err) {}
+  this.style.display = 'none';
+  document.getElementById('pantheon-success').style.display = 'block';
+});
+
+/*
+=== NAVODILA ZA GOOGLE APPS SCRIPT ===
+
+Vaš Google Sheet: https://docs.google.com/spreadsheets/d/1ac5VRB7G15y97DLHEAd0h0YdTvPw6cGP5gmukWSBRqw/
+
+KORAKI:
+1. Odprite ta sheet
+2. Razširitve → Apps Script
+3. Izbrišite obstoječo kodo in prilepite:
+
+function doPost(e) {
+  const sheet = SpreadsheetApp.openById('1ac5VRB7G15y97DLHEAd0h0YdTvPw6cGP5gmukWSBRqw').getActiveSheet();
+  if(sheet.getLastRow() === 0) {
+    sheet.appendRow(['Datum', 'Ime in priimek', 'Podjetje', 'E-mail', 'Telefon', 'Vir']);
+  }
+  const d = JSON.parse(e.postData.contents);
+  sheet.appendRow([d.datum, d.ime, d.podjetje, d.email, d.telefon, d.vir]);
+  return ContentService
+    .createTextOutput(JSON.stringify({result: 'success'}))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+4. Shranite (Ctrl+S)
+5. Deploy → New deployment → Web app
+6. Execute as: Me | Who has access: Anyone
+7. Deploy → kopirajte URL
+8. Zamenjajte YOUR_SCRIPT_ID v PANTHEON_URL zgoraj
+*/
+</script>
+</body>
+</html>
