@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Power BI DEMO – Poslovna analitika | Skupina stroka.si</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Nunito+Sans:ital,opsz,wght@0,6..12,300;0,6..12,400;0,6..12,600;0,6..12,700;1,6..12,300;1,6..12,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --teal:#50afb0;
+  --teal-dark:#3d9899;
+  --teal-light:#e8f7f7;
+  --teal-glow:rgba(80,175,176,0.22);
+  --gold:#fbc259;
+  --salmon:#f6948c;
+  --purple:#b16299;
+  --red:#e35c4f;
+  --navy:#336e78;
+  --ink:#1c1c2e;
+  --gray:#5a5a72;
+  --gray-light:#9292a8;
+  --border:#e4e4ef;
+  --bg:#ffffff;
+  --bg2:#f6f8fa;
+  --bg3:#eef5f5;
+  --fh:'Anton',sans-serif;
+  --fb:'Nunito Sans',sans-serif;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--fb);background:var(--bg);color:var(--ink);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--bg2)}::-webkit-scrollbar-thumb{background:var(--teal);border-radius:2px}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:0 5vw;height:68px;background:rgba(255,255,255,0.96);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+.nav-logo{font-family:var(--fh);font-size:1.6rem;letter-spacing:0.03em;color:var(--ink);text-decoration:none}
+.nav-logo-img{height:32px;width:auto;display:block}
+.nav-right{display:flex;align-items:center;gap:24px}
+.nav-link{font-size:0.9rem;color:var(--gray);text-decoration:none;font-weight:600;transition:color .2s}
+.nav-link:hover{color:var(--teal)}
+.nav-cta{display:inline-flex;align-items:center;gap:8px;background:var(--teal);color:#fff;font-family:var(--fb);font-weight:700;font-size:0.9rem;padding:11px 26px;border-radius:6px;text-decoration:none;border:none;cursor:pointer;transition:all .25s}
+.nav-cta:hover{background:var(--teal-dark);transform:translateY(-1px);box-shadow:0 8px 20px var(--teal-glow)}
+
+/* HERO */
+.hero{padding:140px 5vw 100px;background:var(--bg);position:relative;overflow:hidden}
+.hero-bg-shape{position:absolute;top:0;right:0;width:48%;height:100%;background:linear-gradient(160deg,var(--bg3) 0%,var(--teal-light) 100%);clip-path:polygon(12% 0,100% 0,100% 100%,0 100%);pointer-events:none}
+.hero-dots{position:absolute;top:80px;right:8%;width:160px;height:160px;background-image:radial-gradient(circle,rgba(80,175,176,0.25) 2px,transparent 2px);background-size:18px 18px;border-radius:50%;pointer-events:none}
+.hero-content{position:relative;z-index:1;max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1.1fr 0.9fr;gap:72px;align-items:center}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:0.78rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--teal);margin-bottom:20px}
+.hero-eyebrow::before{content:'';width:24px;height:2px;background:var(--teal);display:block}
+h1{font-family:var(--fh);font-size:clamp(2.8rem,5.2vw,4.8rem);line-height:0.97;letter-spacing:0.01em;color:var(--ink);margin-bottom:24px;text-transform:uppercase}
+h1 em{font-style:normal;color:var(--teal)}
+.hero-desc{font-size:1.05rem;font-weight:400;color:var(--gray);line-height:1.75;max-width:500px;margin-bottom:40px}
+.hero-actions{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+.btn-primary{display:inline-flex;align-items:center;gap:8px;background:var(--teal);color:#fff;font-family:var(--fb);font-weight:700;font-size:1rem;padding:15px 32px;border-radius:6px;text-decoration:none;border:none;cursor:pointer;transition:all .3s}
+.btn-primary:hover{background:var(--teal-dark);transform:translateY(-2px);box-shadow:0 14px 32px var(--teal-glow)}
+.btn-ghost{display:inline-flex;align-items:center;gap:8px;background:transparent;color:var(--ink);font-family:var(--fb);font-weight:600;font-size:1rem;padding:14px 28px;border-radius:6px;text-decoration:none;border:2px solid var(--border);cursor:pointer;transition:all .3s}
+.btn-ghost:hover{border-color:var(--teal);color:var(--teal)}
+.hero-stats{display:flex;gap:44px;margin-top:48px;padding-top:40px;border-top:1px solid var(--border);flex-wrap:wrap}
+.stat-n{font-family:var(--fh);font-size:2.6rem;color:var(--teal);line-height:1}
+.stat-l{font-size:0.82rem;color:var(--gray-light);margin-top:4px;font-weight:600}
+
+/* DASHBOARD MOCK */
+.dash-wrap{position:relative}
+.dash-mock{background:#fff;border-radius:14px;border:1px solid var(--border);overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,0.09),0 2px 8px rgba(0,0,0,0.04);animation:floatUp 5.5s ease-in-out infinite}
+@keyframes floatUp{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.dm-header{background:var(--ink);padding:13px 18px;display:flex;align-items:center;gap:8px}
+.dm-dot{width:9px;height:9px;border-radius:50%}
+.dm-dot.r{background:#ff5f57}.dm-dot.y{background:#febc2e}.dm-dot.g{background:#28c840}
+.dm-title{font-size:0.7rem;color:rgba(255,255,255,0.45);margin-left:6px;letter-spacing:0.04em}
+.dm-body{padding:18px}
+.dm-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:12px}
+.kpi{background:var(--bg2);border-radius:7px;padding:11px;border:1px solid var(--border)}
+.kpi-v{font-family:var(--fh);font-size:1.2rem;color:var(--ink);margin-bottom:2px}
+.kpi-v.t{color:var(--teal)}.kpi-v.g{color:var(--gold)}.kpi-v.s{color:var(--salmon)}
+.kpi-l{font-size:0.6rem;color:var(--gray-light);letter-spacing:0.05em;text-transform:uppercase}
+.kpi-d{font-size:0.68rem;color:#16a34a;margin-top:2px}.kpi-d.neg{color:var(--red)}
+.dm-chart{background:var(--bg2);border-radius:7px;padding:13px;border:1px solid var(--border)}
+.dm-ct{font-size:0.67rem;color:var(--gray-light);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:11px}
+.bars{display:flex;align-items:flex-end;gap:6px;height:68px}
+.b{flex:1;border-radius:3px 3px 0 0}
+.b1{height:52%;background:linear-gradient(to top,var(--teal),rgba(80,175,176,0.3))}
+.b2{height:76%;background:linear-gradient(to top,var(--teal),rgba(80,175,176,0.3))}
+.b3{height:40%;background:var(--border)}
+.b4{height:90%;background:linear-gradient(to top,var(--teal),rgba(80,175,176,0.3))}
+.b5{height:60%;background:var(--border)}
+.b6{height:70%;background:linear-gradient(to top,var(--teal),rgba(80,175,176,0.3))}
+.bar-ls{display:flex;gap:6px;margin-top:4px}
+.bar-l{flex:1;font-size:0.57rem;color:var(--gray-light);text-align:center}
+.dm-bottom{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:9px}
+.dm-mini{background:var(--bg2);border-radius:7px;padding:10px;border:1px solid var(--border)}
+.dm-mt{font-size:0.62rem;color:var(--gray-light);letter-spacing:0.05em;text-transform:uppercase;margin-bottom:7px}
+/* Floating badges */
+.badge-fl{position:absolute;background:#fff;border:1px solid var(--border);border-radius:10px;padding:10px 14px;display:flex;align-items:center;gap:10px;box-shadow:0 12px 32px rgba(0,0,0,0.09);animation:floatBadge 4.5s ease-in-out infinite;z-index:2}
+.badge-fl.b1p{bottom:-18px;left:-28px}.badge-fl.b2p{top:-18px;right:-18px;animation-delay:1.8s}
+@keyframes floatBadge{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+.bf-icon{width:34px;height:34px;border-radius:7px;background:var(--teal-light);border:1px solid rgba(80,175,176,0.2);display:flex;align-items:center;justify-content:center;font-size:1rem}
+.bf-val{font-family:var(--fh);font-size:1.05rem;color:var(--ink)}.bf-lbl{font-size:0.66rem;color:var(--gray-light);margin-top:1px}
+.bf-pill{background:var(--teal);color:#fff;padding:8px 16px;border-radius:8px;box-shadow:0 8px 20px var(--teal-glow)}
+.bf-pill-num{font-family:var(--fh);font-size:1.1rem;color:#fff}
+.bf-pill-sub{font-size:0.65rem;opacity:0.8;margin-top:2px;font-family:var(--fb);font-weight:600}
+
+/* TRUST */
+.trust{background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:30px 5vw}
+.trust-inner{max-width:1280px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:18px}
+.trust-label{font-size:0.74rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--gray-light)}
+.trust-logos{display:flex;gap:36px;flex-wrap:wrap;align-items:center}
+.tl{font-family:var(--fb);font-weight:700;font-size:0.88rem;color:rgba(28,28,46,0.22);transition:color .3s;cursor:default}
+.tl:hover{color:rgba(28,28,46,0.5)}
+
+/* SHARED */
+section{padding:96px 5vw}
+.s-inner{max-width:1280px;margin:0 auto}
+.s-eyebrow{font-size:0.74rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--teal);margin-bottom:12px}
+.s-title{font-family:var(--fh);font-size:clamp(2rem,3.8vw,3.2rem);line-height:1.0;letter-spacing:0.01em;color:var(--ink);text-transform:uppercase;margin-bottom:16px}
+.s-desc{font-size:1rem;color:var(--gray);line-height:1.72}
+
+/* SOLUTIONS — icon grid like competitor */
+.solutions-section{background:#fff}
+.solutions-layout{display:grid;grid-template-columns:280px 1fr;gap:64px;align-items:start}
+.solutions-left .s-title{font-size:clamp(1.8rem,2.8vw,2.5rem)}
+.solutions-left .s-desc{font-size:0.92rem;margin-top:14px;margin-bottom:28px}
+.sol-grid{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--border);border-left:1px solid var(--border)}
+.sol-item{padding:34px 24px;border-right:1px solid var(--border);border-bottom:1px solid var(--border);text-align:center;cursor:pointer;transition:background .22s}
+.sol-item:hover{background:var(--teal-light)}
+.sol-svg{width:64px;height:64px;margin:0 auto 16px;display:flex;align-items:center;justify-content:center}
+.sol-svg svg{width:56px;height:56px}
+.sol-svg svg *{stroke:var(--teal);stroke-width:1.6;fill:none;stroke-linecap:round;stroke-linejoin:round;transition:stroke .2s}
+.sol-item:hover .sol-svg svg *{stroke:var(--teal-dark)}
+.sol-name{font-size:0.84rem;font-weight:700;color:var(--ink);line-height:1.35}
+
+/* DEMO PREVIEW */
+.demo-section{background:var(--bg2)}
+.demo-inner{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center}
+.check-list{display:flex;flex-direction:column;gap:14px;margin:24px 0 36px}
+.cl-item{display:flex;align-items:center;gap:14px}
+.cl-dot{flex-shrink:0;width:26px;height:26px;border-radius:6px;background:var(--teal-light);border:1.5px solid rgba(80,175,176,0.3);display:flex;align-items:center;justify-content:center;font-size:0.8rem;color:var(--teal);font-weight:700}
+.cl-text{font-size:0.94rem;color:var(--gray);line-height:1.5}
+.demo-screen{background:#fff;border-radius:14px;border:1px solid var(--border);overflow:hidden;box-shadow:0 20px 48px rgba(0,0,0,0.08)}
+.ds-header{background:var(--ink);padding:13px 18px;display:flex;align-items:center;gap:8px}
+.ds-body{padding:20px}
+.report-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.report-tt{font-family:var(--fh);font-size:0.88rem;color:var(--ink);letter-spacing:0.02em}
+.report-dt{font-size:0.68rem;color:var(--gray-light)}
+.m-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
+.m-box{background:var(--bg2);border-radius:6px;padding:10px;border:1px solid var(--border);text-align:center}
+.m-box .v{font-family:var(--fh);font-size:1rem;color:var(--ink)}
+.m-box .v.t{color:var(--teal)}.m-box .v.g{color:var(--gold)}
+.m-box .lbl{font-size:0.58rem;color:var(--gray-light);margin-top:2px}
+.line-c{background:var(--bg2);border-radius:6px;padding:12px;border:1px solid var(--border);height:88px;overflow:hidden}
+.line-c svg{width:100%;height:100%}
+
+/* FEATURES */
+.features-section{background:#fff}
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);margin-top:52px;border:1px solid var(--border);border-radius:14px;overflow:hidden}
+.feat-card{background:#fff;padding:36px 30px;transition:background .25s}
+.feat-card:hover{background:var(--teal-light)}
+.feat-card.wide{grid-column:span 2}
+.feat-num{font-family:var(--fh);font-size:3rem;color:var(--teal);line-height:1;margin-bottom:8px}
+.feat-icon{font-size:1.8rem;margin-bottom:16px}
+.feat-title{font-family:var(--fh);font-size:1.1rem;color:var(--ink);margin-bottom:10px;letter-spacing:0.01em}
+.feat-desc{font-size:0.875rem;color:var(--gray);line-height:1.65}
+.feat-bar{height:3px;border-radius:2px;margin-bottom:18px}
+.fb-teal{background:var(--teal)}.fb-gold{background:var(--gold)}.fb-salmon{background:var(--salmon)}.fb-purple{background:var(--purple)}
+
+/* FORM */
+.form-section{background:linear-gradient(135deg,var(--navy) 0%,#1e4a52 50%,var(--ink) 100%);position:relative;overflow:hidden}
+.form-section::before{content:'';position:absolute;top:-150px;right:-80px;width:450px;height:450px;border-radius:50%;background:radial-gradient(circle,rgba(80,175,176,0.15) 0%,transparent 65%);pointer-events:none}
+.form-section::after{content:'';position:absolute;bottom:-80px;left:-60px;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(251,194,89,0.08) 0%,transparent 65%);pointer-events:none}
+.form-wrap{max-width:720px;margin:0 auto;text-align:center;position:relative;z-index:1}
+.form-eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:0.75rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:rgba(80,175,176,0.9);margin-bottom:14px}
+.form-title{font-family:var(--fh);font-size:clamp(2rem,4vw,3.2rem);color:#fff;margin-bottom:12px;line-height:1;text-transform:uppercase}
+.form-subtitle{font-size:1rem;color:rgba(255,255,255,0.5);line-height:1.7}
+.form-box{margin-top:52px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-radius:18px;padding:48px 44px;position:relative;overflow:hidden}
+.form-box::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--teal),var(--gold),var(--salmon))}
+.form-inner-title{font-family:var(--fh);font-size:1.5rem;color:#fff;margin-bottom:6px}
+.form-inner-sub{font-size:0.88rem;color:rgba(255,255,255,0.4);margin-bottom:30px;line-height:1.6}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.field{display:flex;flex-direction:column;gap:7px;margin-bottom:14px}
+.field label{font-size:0.74rem;font-weight:700;color:rgba(255,255,255,0.45);letter-spacing:0.07em;text-transform:uppercase}
+.field input{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);color:#fff;font-family:var(--fb);font-size:0.95rem;padding:13px 16px;border-radius:8px;outline:none;transition:all .25s}
+.field input:focus{border-color:var(--teal);background:rgba(80,175,176,0.1);box-shadow:0 0 0 3px rgba(80,175,176,0.12)}
+.field input::placeholder{color:rgba(255,255,255,0.22)}
+.submit-btn{width:100%;padding:17px;background:var(--teal);color:#fff;font-family:var(--fb);font-weight:700;font-size:1rem;border:none;border-radius:8px;cursor:pointer;transition:all .3s;letter-spacing:0.02em;margin-top:4px}
+.submit-btn:hover{background:var(--teal-dark);transform:translateY(-2px);box-shadow:0 14px 36px var(--teal-glow)}
+.form-note{margin-top:28px;padding:16px 20px;background:rgba(80,175,176,0.08);border:1px solid rgba(80,175,176,0.18);border-radius:8px;text-align:left}
+.form-note p{font-size:0.84rem;color:rgba(255,255,255,0.5);line-height:1.6}
+.form-note strong{color:rgba(80,175,176,0.95)}
+.form-privacy{font-size:0.74rem;color:rgba(255,255,255,0.28);margin-top:18px;line-height:1.6;text-align:center}
+.form-privacy a{color:rgba(80,175,176,0.8);text-decoration:none}
+.success-msg{display:none;text-align:center;padding:24px 0}
+.success-icon{font-size:3.2rem;margin-bottom:14px}
+.success-title{font-family:var(--fh);font-size:1.6rem;color:#fff;margin-bottom:8px}
+.success-sub{color:rgba(255,255,255,0.45);font-size:0.9rem;line-height:1.6}
+
+/* FOOTER */
+footer{background:var(--ink);border-top:1px solid rgba(255,255,255,0.06);padding:56px 5vw 36px}
+.footer-inner{max-width:1280px;margin:0 auto;display:flex;justify-content:space-between;flex-wrap:wrap;gap:40px}
+.footer-logo-name{}
+.footer-logo-img img{filter:brightness(0) invert(1);opacity:0.85}
+.footer-tagline{font-size:0.84rem;color:rgba(255,255,255,0.32);margin-top:8px;max-width:240px;line-height:1.6}
+.footer-links h4{font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:14px}
+.footer-links a{display:block;font-size:0.88rem;color:rgba(255,255,255,0.42);text-decoration:none;margin-bottom:9px;transition:color .2s}
+.footer-links a:hover{color:var(--teal)}
+.footer-bottom{max-width:1280px;margin:36px auto 0;padding-top:22px;border-top:1px solid rgba(255,255,255,0.06);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:0.78rem;color:rgba(255,255,255,0.22)}
+
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:translateY(0)}}
+.fu{opacity:0;animation:fadeUp .7s ease forwards}
+.d1{animation-delay:.1s}.d2{animation-delay:.2s}.d3{animation-delay:.3s}.d4{animation-delay:.4s}
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .65s ease,transform .65s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* RESPONSIVE */
+@media(max-width:1060px){
+  .hero-content{grid-template-columns:1fr}
+  .hero-bg-shape,.hero-dots,.dash-wrap{display:none}
+  .solutions-layout{grid-template-columns:1fr}
+  .demo-inner{grid-template-columns:1fr}
+  .feat-grid{grid-template-columns:1fr 1fr}
+  .feat-card.wide{grid-column:span 1}
+}
+@media(max-width:640px){
+  nav{padding:0 20px}
+  .hero{padding:108px 20px 60px}
+  h1{font-size:2.4rem}
+  section{padding:64px 20px}
+  .sol-grid{grid-template-columns:repeat(2,1fr)}
+  .feat-grid{grid-template-columns:1fr}
+  .field-row{grid-template-columns:1fr}
+  .form-box{padding:30px 22px}
+  .footer-inner{flex-direction:column}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="https://www.stroka.si" class="nav-logo"><img src="https://www.stroka.si/Portals/_default/logo_stroka_si_white.png?ver=2025-06-04-113611-483&timestamp=1749029751774" alt="Skupina stroka.si" class="nav-logo-img"></a>
+  <div class="nav-right">
+    <a href="#resitve" class="nav-link">Rešitve</a>
+    <a href="#demo-form" class="nav-cta">Zahtevajte DEMO →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg-shape"></div>
+  <div class="hero-dots"></div>
+  <div class="hero-content">
+    <div>
+      <div class="hero-eyebrow fu">Power BI poslovna analitika</div>
+      <h1 class="fu d1">Vaši podatki,<br><em>vizualizirani</em><br>v realnem času</h1>
+      <p class="hero-desc fu d2">Odkrijte, kako naše Power BI nadzorne plošče spremenijo surove poslovne podatke v jasne, akcijske vpoglede za finance, prodajo, proizvodnjo in projekte.</p>
+      <div class="hero-actions fu d3">
+        <a href="#demo-form" class="btn-primary">Dostop do DEMO →</a>
+        <a href="#resitve" class="btn-ghost">Ogled rešitev</a>
+      </div>
+      <div class="hero-stats fu d4">
+        <div><div class="stat-n">50+</div><div class="stat-l">implementiranih plošč</div></div>
+        <div><div class="stat-n">30+</div><div class="stat-l">let izkušenj</div></div>
+        <div><div class="stat-n">800+</div><div class="stat-l">zadovoljnih strank</div></div>
+      </div>
+    </div>
+    <div class="dash-wrap fu d2">
+      <div class="dash-mock">
+        <div class="dm-header">
+          <div class="dm-dot r"></div><div class="dm-dot y"></div><div class="dm-dot g"></div>
+          <span class="dm-title">B2Bi Analytics · FinCheck Dashboard</span>
+        </div>
+        <div class="dm-body">
+          <div class="dm-kpis">
+            <div class="kpi"><div class="kpi-v t">€1.24M</div><div class="kpi-l">Prihodki</div><div class="kpi-d">↑ 12.4%</div></div>
+            <div class="kpi"><div class="kpi-v g">€284K</div><div class="kpi-l">Terjatve</div><div class="kpi-d neg">↑ 3.1%</div></div>
+            <div class="kpi"><div class="kpi-v s">18.3%</div><div class="kpi-l">EBITDA</div><div class="kpi-d">↑ 2.1pp</div></div>
+          </div>
+          <div class="dm-chart">
+            <div class="dm-ct">Mesečni prihodki / Jan–Jun</div>
+            <div class="bars">
+              <div class="b b1"></div><div class="b b2"></div><div class="b b3"></div>
+              <div class="b b4"></div><div class="b b5"></div><div class="b b6"></div>
+            </div>
+            <div class="bar-ls">
+              <div class="bar-l">Jan</div><div class="bar-l">Feb</div><div class="bar-l">Mar</div>
+              <div class="bar-l">Apr</div><div class="bar-l">Maj</div><div class="bar-l">Jun</div>
+            </div>
+          </div>
+          <div class="dm-bottom">
+            <div class="dm-mini">
+              <div class="dm-mt">Cashflow trend</div>
+              <svg viewBox="0 0 120 36" style="width:100%;height:36px">
+                <defs><linearGradient id="cg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#50afb0" stop-opacity="0.35"/><stop offset="100%" stop-color="#50afb0" stop-opacity="0"/></linearGradient></defs>
+                <path d="M0,28 C20,24 35,16 55,12 C75,8 90,20 120,6" fill="none" stroke="var(--teal)" stroke-width="2"/>
+                <path d="M0,28 C20,24 35,16 55,12 C75,8 90,20 120,6 V36 H0Z" fill="url(#cg)"/>
+              </svg>
+            </div>
+            <div class="dm-mini">
+              <div class="dm-mt">OEE danes</div>
+              <div style="font-family:var(--fh);font-size:1.5rem;color:var(--teal);margin-top:2px">93.6%</div>
+              <div style="font-size:0.65rem;color:var(--gray-light)">Stroj 1–4 · aktiven</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="badge-fl b1p">
+        <div class="bf-icon">📊</div>
+        <div><div class="bf-val">Live podatki</div><div class="bf-lbl">Posodobljeno ravnokar</div></div>
+      </div>
+      <div class="badge-fl b2p">
+        <div class="bf-pill">
+          <div class="bf-pill-num">+12.4%</div>
+          <div class="bf-pill-sub">vs. lani</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TRUST -->
+<div class="trust">
+  <div class="trust-inner">
+    <div class="trust-label">Smo partner za razvoj analitike</div>
+    <div class="trust-logos">
+      <div class="tl">Medakor</div><div class="tl">Triglav</div>
+      <div class="tl">Lenis</div><div class="tl">Danfoss</div><div class="tl">+ 50 podjetij</div>
+    </div>
+  </div>
+</div>
+
+<!-- SOLUTIONS — icon grid -->
+<section class="solutions-section" id="resitve">
+  <div class="s-inner">
+    <div class="solutions-layout">
+      <div class="solutions-left">
+        <div class="s-eyebrow reveal">Rešitve za vsako panogo</div>
+        <div class="s-title reveal">Oglejte si dobre prakse po poslovnih področjih</div>
+        <p class="s-desc reveal">Naše Power BI nadzorne plošče pokrivajo ključna poslovna področja. Potrebujete specifičen demo za svojo panogo? Kontaktirajte nas.</p>
+        <a href="#demo-form" class="btn-primary reveal" style="margin-top:20px;display:inline-flex">Stopite v stik →</a>
+      </div>
+      <div class="sol-grid reveal">
+
+        <div class="sol-item">
+          <div class="sol-svg"><svg viewBox="0 0 56 56" class="icon">
+            <rect x="8" y="14" width="40" height="30" rx="3"/>
+            <path d="M16 32 L22 24 L28 28 L36 18 L44 22"/>
+            <path d="M8 44h40"/><path d="M20 44v4"/><path d="M36 44v4"/>
+          </svg></div>
+          <div class="sol-name">FinCheck<br>kazalniki</div>
+        </div>
+
+        <div class="sol-item">
+          <div class="sol-svg"><svg viewBox="0 0 56 56" class="icon">
+            <path d="M10 28 C10 18 18 10 28 10 C38 10 46 18 46 28"/>
+            <path d="M28 10 v8"/><path d="M10 28 h8"/><path d="M38 28 h8"/>
+            <circle cx="28" cy="28" r="5"/>
+            <path d="M16 38 C18 34 22 32 28 32 C34 32 38 34 40 38"/>
+            <path d="M12 42 h32" stroke-width="2.5"/>
+          </svg></div>
+          <div class="sol-name">CashFlow<br>Planner</div>
+        </div>
+
+        <div class="sol-item">
+          <div class="sol-svg"><svg viewBox="0 0 56 56" class="icon">
+            <rect x="8" y="34" width="8" height="14" rx="2"/>
+            <rect x="20" y="24" width="8" height="24" rx="2"/>
+            <rect x="32" y="16" width="8" height="32" rx="2"/>
+            <rect x="44" y="28" width="8" height="20" rx="2"/>
+            <path d="M6 48 h44"/>
+            <circle cx="36" cy="12" r="4"/>
+            <path d="M14 30 L32 16"/>
+          </svg></div>
+          <div class="sol-name">OEE<br>Produkcija</div>
+        </div>
+
+        <div class="sol-item">
+          <div class="sol-svg"><svg viewBox="0 0 56 56" class="icon">
+            <rect x="8" y="8" width="40" height="40" rx="4"/>
+            <path d="M8 20 h40"/>
+            <path d="M20 8 v12"/><path d="M36 8 v12"/>
+            <path d="M16 30 h8"/><path d="M16 38 h16"/>
+            <circle cx="38" cy="34" r="7"/>
+            <path d="M35 34 l2 2 4-4"/>
+          </svg></div>
+          <div class="sol-name">Projektni<br>management</div>
+        </div>
+
+        <div class="sol-item">
+          <div class="sol-svg"><svg viewBox="0 0 56 56" class="icon">
+            <path d="M8 12 h4 l6 22 h24 l4-14 H18"/>
+            <circle cx="24" cy="42" r="3"/><circle cx="38" cy="42" r="3"/>
+            <path d="M26 20 v8 m-4-4 h8"/>
+          </svg></div>
+          <div class="sol-name">Poslovna analitika<br>prodaje</div>
+        </div>
+
+        <div class="sol-item" style="background:var(--teal-light)">
+          <div class="sol-svg"><svg viewBox="0 0 56 56" class="icon">
+            <path d="M28 10 C18 10 10 18 10 28 C10 38 18 46 28 46"/>
+            <path d="M28 10 C38 10 46 18 46 28 C46 38 38 46 28 46"/>
+            <path d="M28 18 v10 l6 4"/>
+            <path d="M36 40 l6 6"/><circle cx="44" cy="46" r="4"/>
+          </svg></div>
+          <div class="sol-name" style="color:var(--navy)">Specifičen<br>DEMO po meri</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DEMO PREVIEW -->
+<section class="demo-section">
+  <div class="demo-inner s-inner">
+    <div class="reveal">
+      <div class="s-eyebrow">Interaktivni DEMO</div>
+      <div class="s-title">Oglejte si realne<br>poslovne podatke</div>
+      <p class="s-desc" style="margin-top:14px">Naš standardni DEMO prikazuje primer poslovne analitike z realnimi strukturami podatkov — videli boste, kako bi vaše informacije izgledале vizualizirane v Power BI.</p>
+      <div class="check-list">
+        <div class="cl-item"><div class="cl-dot">✓</div><span class="cl-text">Interaktivne nadzorne plošče v realnem času</span></div>
+        <div class="cl-item"><div class="cl-dot">✓</div><span class="cl-text">Drill-down analiza po produktih, regijah, strankah</span></div>
+        <div class="cl-item"><div class="cl-dot">✓</div><span class="cl-text">Primerjava s preteklimi obdobji in cilji</span></div>
+        <div class="cl-item"><div class="cl-dot">✓</div><span class="cl-text">Prilagodljivi grafi, tabele in KPI kartice</span></div>
+      </div>
+      <a href="#demo-form" class="btn-primary">Dostop do DEMO</a>
+    </div>
+    <div class="reveal">
+      <div class="demo-screen">
+        <div class="ds-header">
+          <div class="dm-dot r"></div><div class="dm-dot y"></div><div class="dm-dot g"></div>
+          <span class="dm-title">B2Bi · Poslovna analitika · DEMO</span>
+        </div>
+        <div class="ds-body">
+          <div class="report-h">
+            <div class="report-tt">Finančni pregled — 2025</div>
+            <div class="report-dt">Posodobljeno: danes</div>
+          </div>
+          <div class="m-row">
+            <div class="m-box"><div class="v t">€3.2M</div><div class="lbl">Prihodki</div></div>
+            <div class="m-box"><div class="v">21.4%</div><div class="lbl">Marža</div></div>
+            <div class="m-box"><div class="v g">€180K</div><div class="lbl">Cash Flow</div></div>
+            <div class="m-box"><div class="v t">94.2%</div><div class="lbl">OEE</div></div>
+          </div>
+          <div class="line-c">
+            <svg viewBox="0 0 400 72" preserveAspectRatio="none">
+              <defs><linearGradient id="lg1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#50afb0" stop-opacity="0.4"/><stop offset="100%" stop-color="#50afb0" stop-opacity="0"/></linearGradient></defs>
+              <path d="M0,55 C50,50 80,36 120,30 C160,24 190,40 230,20 C270,2 310,16 350,10 C375,6 400,8 400,8" fill="none" stroke="#50afb0" stroke-width="2.5"/>
+              <path d="M0,55 C50,50 80,36 120,30 C160,24 190,40 230,20 C270,2 310,16 350,10 C375,6 400,8 400,8 V72 H0Z" fill="url(#lg1)"/>
+            </svg>
+          </div>
+          <div style="margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:8px">
+            <div style="background:var(--bg2);border-radius:6px;padding:10px;border:1px solid var(--border)">
+              <div style="font-size:0.62rem;color:var(--gray-light);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px">Top stranke</div>
+              <div style="display:flex;flex-direction:column;gap:5px">
+                <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:0.7rem;color:var(--ink)">Stranka A</span><div style="width:55%;height:4px;background:var(--border);border-radius:2px;overflow:hidden"><div style="width:80%;height:100%;background:var(--teal);border-radius:2px"></div></div></div>
+                <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:0.7rem;color:var(--ink)">Stranka B</span><div style="width:55%;height:4px;background:var(--border);border-radius:2px;overflow:hidden"><div style="width:55%;height:100%;background:var(--teal);border-radius:2px;opacity:0.7"></div></div></div>
+                <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:0.7rem;color:var(--ink)">Stranka C</span><div style="width:55%;height:4px;background:var(--border);border-radius:2px;overflow:hidden"><div style="width:35%;height:100%;background:var(--teal);border-radius:2px;opacity:0.5"></div></div></div>
+              </div>
+            </div>
+            <div style="background:var(--bg2);border-radius:6px;padding:10px;border:1px solid var(--border)">
+              <div style="font-size:0.62rem;color:var(--gray-light);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px">Opozorila</div>
+              <div style="font-size:0.7rem;color:var(--red);margin-bottom:3px">⚠ Terjatve > 90 dni: 3</div>
+              <div style="font-size:0.7rem;color:var(--gold);margin-bottom:3px">⚡ OEE pad: Stroj 4</div>
+              <div style="font-size:0.7rem;color:#16a34a">✓ Budget on track</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features-section">
+  <div class="s-inner">
+    <div><div class="s-eyebrow reveal">Zakaj Skupina stroka.si</div><div class="s-title reveal">Rešitve, ki prinašajo<br>merljive rezultate</div></div>
+    <div class="feat-grid">
+      <div class="feat-card wide reveal"><div class="feat-bar fb-teal"></div><div class="feat-num">50+</div><div class="feat-title">Implementiranih nadzornih plošč</div><div class="feat-desc">Več kot 50 uspešno implementiranih Power BI rešitev pri podjetjih različnih panog — od proizvodnje do financ in projektnih organizacij.</div></div>
+      <div class="feat-card reveal"><div class="feat-bar fb-gold"></div><div class="feat-icon">⚡</div><div class="feat-title">Hitri vpogledi</div><div class="feat-desc">Od podatkov do vpogleda v manj kot 5 sekundah. Odločitve na podlagi faktov, ne občutkov.</div></div>
+      <div class="feat-card reveal"><div class="feat-bar fb-salmon"></div><div class="feat-icon">🔗</div><div class="feat-title">Integracija s PANTHEON</div><div class="feat-desc">Native integracija z PANTHEON ERP — vaši podatki so že tam, mi jih samo vizualiziramo.</div></div>
+      <div class="feat-card reveal"><div class="feat-bar fb-purple"></div><div class="feat-icon">🎨</div><div class="feat-title">Prilagodljiv dizajn</div><div class="feat-desc">Vsaka nadzorna plošča po meri — vaše barve, vaši KPI-ji, vaš kontekst.</div></div>
+      <div class="feat-card reveal"><div class="feat-bar fb-teal"></div><div class="feat-icon">📱</div><div class="feat-title">Mobilni dostop</div><div class="feat-desc">Ključne metrike kjer koli in kadar koli — PC, tablica, mobilni telefon.</div></div>
+      <div class="feat-card wide reveal"><div class="feat-bar fb-gold"></div><div class="feat-icon">🚀</div><div class="feat-title">Hiter onboarding</div><div class="feat-desc">Vaša prva nadzorna plošča je aktivna v 2–4 tednih. Prevzamemo celoten proces od analize podatkov do implementacije in usposabljanja ekipe.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- LEAD FORM -->
+<section class="form-section" id="demo-form">
+  <div class="form-wrap">
+    <div class="form-eyebrow reveal">Brezplačen DEMO</div>
+    <div class="form-title reveal">Preizkusite Power BI<br>na vaših podatkih</div>
+    <p class="form-subtitle reveal">Izpolnite obrazec in pridobite dostop do interaktivnega demo okolja. Brez obveznosti.</p>
+    <div class="form-box reveal">
+      <div class="form-inner-title">Zahtevajte DEMO dostop</div>
+      <div class="form-inner-sub">Odgovorili vam bomo v roku 24 ur z dostopnimi podatki.</div>
+      <form id="pbi-form">
+        <div class="field-row">
+          <div class="field"><label>Ime in priimek *</label><input type="text" name="ime" placeholder="Jana Novak" required></div>
+          <div class="field"><label>Podjetje *</label><input type="text" name="podjetje" placeholder="Vaše podjetje d.o.o." required></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label>E-mail *</label><input type="email" name="email" placeholder="jana@podjetje.si" required></div>
+          <div class="field"><label>Telefonska številka</label><input type="tel" name="telefon" placeholder="+386 ..."></div>
+        </div>
+        <button type="submit" class="submit-btn">Pošlji zahtevek za DEMO →</button>
+      </form>
+      <div class="success-msg" id="pbi-success">
+        <div class="success-icon">🎉</div>
+        <div class="success-title">Zahtevek poslan!</div>
+        <div class="success-sub">Kontaktirali vas bomo v roku 24 ur z dostopom do DEMO okolja.</div>
+      </div>
+      <div class="form-note">
+        <p><strong>Potrebujete specifičen DEMO za svojo panogo?</strong> Kontaktirajte nas na <strong>ccc@stroka.si</strong> — pripravimo prilagojen demo za vaše specifične poslovne procese.</p>
+      </div>
+      <p class="form-privacy">Z izpolnitvijo soglašate z našo <a href="#">politiko zasebnosti</a>. Podatkov ne delimo s tretjimi osebami.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div><div class="footer-logo-img"><img src="https://www.stroka.si/Portals/_default/logo_stroka_si_white.png?ver=2025-06-04-113611-483&timestamp=1749029751774" alt="Skupina stroka.si" style="max-width:180px;height:auto"></div><div class="footer-tagline">Z več kot 30-letnimi izkušnjami na področju IT rešitev vam pomagamo izbrati najboljšo rešitev za vaše podjetje.</div></div>
+    <div class="footer-links"><h4>Rešitve</h4><a href="#">FinCheck</a><a href="#">CashFlow Planner</a><a href="#">OEE Produkcija</a><a href="#">Projektni nadzor</a></div>
+    <div class="footer-links"><h4>Podjetje</h4><a href="https://www.stroka.si" target="_blank">www.stroka.si</a><a href="#">O nas</a><a href="#">Kontakt</a></div>
+    <div class="footer-links"><h4>Kontakt</h4><a href="mailto:ccc@stroka.si">ccc@stroka.si</a><a href="https://www.stroka.si" target="_blank">www.stroka.si</a></div>
+  </div>
+  <div class="footer-bottom"><span>© 2026 Stroka produkt d.o.o. Vse pravice pridržane.</span><span>Skupina stroka.si · ccc@stroka.si · www.stroka.si</span></div>
+</footer>
+
+<script>
+const obs = new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}})},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+const PBI_URL = 'REPLACE_WITH_POWERBI_GOOGLE_APPS_SCRIPT_URL';
+document.getElementById('pbi-form').addEventListener('submit',async function(e){
+  e.preventDefault();
+  const btn=this.querySelector('.submit-btn');btn.textContent='Pošiljam...';btn.disabled=true;
+  const fd=new FormData(this);
+  const data={ime:fd.get('ime'),podjetje:fd.get('podjetje'),email:fd.get('email'),telefon:fd.get('telefon')||'-',vir:'Power BI DEMO Landing Page',datum:new Date().toLocaleString('sl-SI')};
+  try{await fetch(PBI_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)})}catch(err){}
+  this.style.display='none';document.getElementById('pbi-success').style.display='block';
+});
+/*
+GOOGLE APPS SCRIPT za Google Sheets:
+1. Nov Google Sheet → Razširitve → Apps Script
+2. Prilepite kodo:
+
+function doPost(e) {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  if(sheet.getLastRow()===0) sheet.appendRow(['Datum','Ime','Podjetje','E-mail','Telefon','Vir']);
+  const d = JSON.parse(e.postData.contents);
+  sheet.appendRow([d.datum,d.ime,d.podjetje,d.email,d.telefon,d.vir]);
+  return ContentService.createTextOutput(JSON.stringify({result:'success'})).setMimeType(ContentService.MimeType.JSON);
+}
+
+3. Deploy → New deployment → Web app → Execute as Me → Anyone → Deploy
+4. Kopirajte URL → zamenjajte PBI_URL zgoraj
+*/
+</script>
+</body>
+</html>
